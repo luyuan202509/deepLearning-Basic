@@ -33,10 +33,16 @@ x,t = getdata()
 network = init_network()
 #print("Keys in network:", list(network.keys()))
 
-accuracy = 0 
-for i in range(len(x)):
-    y = predict(network, x[i])
-    p = np.argmax(y) # 获取概率最高的元素的索引
-    if p == t[i]:
-        accuracy += 1
-print("Accuracy:", str(float(accuracy) / len(x)))
+# 开始学习预测
+batch_size = 100
+accuracy_cnt = 0 
+for i in range(0,len(x),batch_size):
+    x_batch = x[i:i+batch_size]
+    y_batch = predict(network,x_batch)
+    p = np.argmax(y_batch,axis=1) # 获取概率最高的元素的索引
+    print(f"第{ i} 批精确度：{p}")
+    print(f"测试精确度数据：{t[i:i+batch_size]}")
+    accuracy_cnt += np.sum( p == t[i:i+batch_size])
+    #print(f"总共精确度：{accuracy_cnt}")
+print(f":::{t}")
+print("Accuracy:", str(float(accuracy_cnt) / len(x)))

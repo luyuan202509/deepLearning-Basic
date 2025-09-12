@@ -9,7 +9,7 @@ from common.functions import sigmoid, softmax
 
 def getdata():
     (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, flatten=True, one_hot_label=False)   
-    return x_test, t_test
+    return x_train, t_train
 
 def init_network():
     with open("dataset/mnist.pkl", 'rb') as f:
@@ -31,6 +31,14 @@ def predict(network, x):
     y = softmax(a3)
     return y
 
-x,y = getdata()
-network = init_network()
-print("Keys in network:", list(network.keys()))
+x_train,t_train = getdata()
+
+
+train_size = x_train.shape[0]
+print(train_size)
+batch_size = 10
+batch_mask = np.random.choice(train_size, batch_size,replace=False)
+x_batch = x_train[batch_mask]
+t_batch = t_train[batch_mask]
+
+print(batch_mask)

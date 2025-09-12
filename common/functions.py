@@ -28,3 +28,16 @@ def mean_squared_error(y,t):
 def cross_entropy_error(y,t):
     delt  = 1e-7
     return -np.sum(t * np.log(y-delt))
+
+# mini-batch版交叉熵误差的实现,监督数据只有一个正确结果或者有多个
+def cross_entropy_error(y,t,one_hot_label):
+    delt  = 1e-7
+    if y.ndim == 1:
+        t = t.reshape(1, t.size)
+        y = y.reshape(1, y.size)
+        
+    batch_size = y.shape[0]
+    if not one_hot_label:
+        return -np.sum(y[np.log([y,batch_size]),t]+ 1e-7) / batch_size
+    else:
+        return -np.sum(t * np.log(y-delt)) / batch_size

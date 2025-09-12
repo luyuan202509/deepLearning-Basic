@@ -1,8 +1,6 @@
 ''' 常用公共函数 '''
 import numpy as np
 
-from test import numerical_diff
-
 # 激活函数
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
@@ -60,7 +58,7 @@ def numerical_gradient(f,x):
         x[idx] = tmp_val -h 
         fxh2 = f(x)
         
-        grad[idx] = (fxh1-fxh2) / 2*h 
+        grad[idx] = (fxh1-fxh2) / (2*h) 
         x[idx]= tmp_val
 
     return grad 
@@ -70,6 +68,7 @@ def numerical_gradient(f,x):
 def gradient_descent(f,init_x,lr = 0.01,step_num =100):
     x = init_x
     for i in range(step_num):
-        grad = numerical_diff(f,x)
+        grad = numerical_gradient(f,x) # 需要实现数值梯度计算
         x -= lr * grad
+    return x
         

@@ -19,3 +19,11 @@ def softmax(a):
     sum_exp_a = np.sum(exp_a)
     y = exp_a / sum_exp_a
     return y 
+
+'''损失函数'''
+# 均方误差
+def mean_squared_error(y,t):
+    return 0.5 * np.sum(y-t**2)
+# 交叉熵误差
+def cross_entropy_error(y,t):
+    return -np.sum(t * np.log(y))

@@ -1,8 +1,8 @@
-import os,sys
+import sys,os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
-sys.path.append(os.path.join(os.path.abspath(__file__)) + '..')
 import numpy as np
-from common.functions import cross_entropy_error, sigmoid, sigmoid_grad, softmax,loss,numerical_gradient
+from common.functions import cross_entropy_error, sigmoid, sigmoid_grad, softmax,numerical_gradient
 class TwoLayerNet:
     '''2层神经网络'''
     
@@ -81,3 +81,13 @@ class TwoLayerNet:
         grads['b1'] = np.sum(dz1, axis=0)
 
         return grads
+
+
+net = TwoLayerNet(input_size=784, hidden_size=100, output_size=10) 
+x = np.random.rand(100, 784) # 伪输入数据（100笔）
+t = np.random.rand(100, 10) # 伪正确解标签（100笔）
+grad = net.gradient(x, t)
+print(f'W1梯度:{grad['W2']}')
+print(f'b1梯度:{grad['b1']}')
+print(f'W2梯度:{grad['W2']}')
+print(f'b2梯度:{grad['b2']}')

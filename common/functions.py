@@ -4,6 +4,9 @@ import numpy as np
 # 激活函数
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
+# 激活函数的导数
+def sigmoid_grad(x):
+    return (1.0 - sigmoid(x)) * sigmoid(x)
 # 越迁函数
 def step_function(x):
     return np.array(x > 0, dtype=np.int)

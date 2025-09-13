@@ -6,7 +6,7 @@ from common.functions import cross_entropy_error, sigmoid, sigmoid_grad, softmax
 class TwoLayerNet:
     '''2层神经网络'''
     
-    
+   # network = TwoLayerNet(input_size=784, hidden_size=100, output_size=10)
     def __init__(self,input_size,hidden_size,output_size,weight_init_std=0.01):
         '''初始化权重'''
         self.params = {}
@@ -27,6 +27,7 @@ class TwoLayerNet:
         z1 = sigmoid(a1)
         a2 = np.dot(z1,W2) + b2
         y = softmax(a2)
+        return y
     
     # x:输入数据，t:监督数据(正确数据)
     def loss(self,x,t):
@@ -42,7 +43,7 @@ class TwoLayerNet:
             y = self.predict(x)
             y = np.argmax(y,axis=1)
             t = np.argmax(t,axis=1)
-            print(f'哈哈哈哈哈：：{np.sum(y == t)}')
+            #print(f'哈哈哈哈哈：：{np.sum(y == t)}')
             accuracy_cnt = np.sum(y == t) / float(x.shape[0])
             return accuracy_cnt
 
@@ -82,12 +83,3 @@ class TwoLayerNet:
 
         return grads
 
-
-net = TwoLayerNet(input_size=784, hidden_size=100, output_size=10) 
-x = np.random.rand(100, 784) # 伪输入数据（100笔）
-t = np.random.rand(100, 10) # 伪正确解标签（100笔）
-grad = net.gradient(x, t)
-print(f'W1梯度:{grad['W2']}')
-print(f'b1梯度:{grad['b1']}')
-print(f'W2梯度:{grad['W2']}')
-print(f'b2梯度:{grad['b2']}')

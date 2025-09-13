@@ -11,7 +11,7 @@ from common.functions import sigmoid, softmax
 
 def getdata():
     (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, flatten=True, one_hot_label=False)   
-    return x_test, t_test
+    return x_train, t_train
 
 def init_network():
     with open("dataset/mnist.pkl", 'rb') as f:
@@ -32,7 +32,7 @@ def predict(network, x):
     a3 = np.dot(z2, W3) + b3
     y = softmax(a3)
     return y
-
+  
 x,y = getdata()
 network = init_network()
 

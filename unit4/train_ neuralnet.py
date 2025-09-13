@@ -26,7 +26,7 @@ for i in range(iters_num):
     t_batch = t_train[batch_mask]
 
     #计算梯度
-    gradient = network.numerical_gradient(x_batch, t_batch)
+    gradient = network.gradient(x_batch, t_batch)
     
     # 更新参数
     for key in ('W1', 'b1', 'W2', 'b2'):

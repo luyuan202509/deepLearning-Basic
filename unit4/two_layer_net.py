@@ -36,17 +36,24 @@ class TwoLayerNet:
         loss = cross_entropy_error(y,t)
         return loss
     
+    ''' 
     def accuracy(self,x,t):
-        '''准确率 '''
+        """准确率"""
         accuracy_cnt = 0;
         if x.ndim == 1:
             y = self.predict(x)
             y = np.argmax(y,axis=1)
             t = np.argmax(t,axis=1)
-            #print(f'哈哈哈哈哈：：{np.sum(y == t)}')
             accuracy_cnt = np.sum(y == t) / float(x.shape[0])
             return accuracy_cnt
-
+    '''
+    def accuracy(self, x, t):
+        y = self.predict(x)
+        y = np.argmax(y, axis=1)
+        t = np.argmax(t, axis=1)
+        
+        accuracy = np.sum(y == t) / float(x.shape[0])
+        return accuracy
     # 计算权重参数的梯度 x:输入数据，t:监督数据(正确数据)            
     def numerical_gradient(self,x,t):
         loss_W  = lambda W: self.loss(x,t)

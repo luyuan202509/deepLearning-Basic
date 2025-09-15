@@ -25,7 +25,7 @@ class TwoLayerNet:
     def predict(self,x):
         '''预测'''
         for layer in self.layers.values():
-            x = layer.froward(x)
+            x = layer.forward(x)
         return x
     
     def loss(self,x,t):
@@ -45,6 +45,7 @@ class TwoLayerNet:
     def numerical_gradient(self,x,t):
         '''数值梯度下降'''
         loss = lambda w: self.loss(x,t)
+        print('梯度计算中...')
         grads = {}
         grads['W1'] = numerical_gradient(loss,self.params['W1'])
         grads['b1'] = numerical_gradient(loss,self.params['b1'])
@@ -58,13 +59,13 @@ class TwoLayerNet:
         self.loss(x,t)
         # backward
         dout = 1
-        dout = self.lastLayer.backword(dout)
+        dout = self.lastLayer.backward(dout)
         
         layers = list(self.layers.values())
         layers.reverse()
         
         for layer in layers:
-            dout = layer.backword(dout)
+            dout = layer.backward(dout)
         
         # 填写结果
         grads = {} 

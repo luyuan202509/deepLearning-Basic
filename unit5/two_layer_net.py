@@ -44,7 +44,7 @@ class TwoLayerNet:
     
     def numerical_gradient(self,x,t):
         '''数值梯度下降'''
-        loss = lambda w: self.loss(x,t)
+        loss = lambda W: self.loss(x,t)
         print('梯度计算中...')
         grads = {}
         grads['W1'] = numerical_gradient(loss,self.params['W1'])
@@ -76,7 +76,3 @@ class TwoLayerNet:
         
         return grads
         
-
-        
-    
-    

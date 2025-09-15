@@ -1,10 +1,12 @@
+import sys,os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 import numpy as np
-from functions import sigmoid,softmax,cross_entropy_error
+from common.functions import sigmoid,softmax,cross_entropy_error
 class Relu:
     def __init__(self):
         self.mask = None
 
-    def froward(self,x):
+    def forward(self,x):
         self.mask = (x <= 0)
         out = x.copy()
         out[self.mask] = 0
@@ -14,7 +16,7 @@ class Relu:
         def forwald(self,x):
         return np.maximum(0,x)
     '''
-    def backword(self,dout):
+    def backward(self,dout):
         dout[self.mask] = 0
         dx = dout
         return dx 
@@ -27,7 +29,7 @@ class Sigmoid:
         out = sigmoid(x)
         self.out = out
         return out
-    def backword(self,dout):
+    def backward(self,dout):
         dx = dout * (1.0 - self.out) * self.out
         return dx
 
@@ -44,7 +46,7 @@ class Affine:
         out = np.dot(x, self.W) + self.b
         return out
 
-    def backword(self,dout):
+    def backward(self,dout):
         dx = np.dot(dout, self.W.T)
         self.dW = np.dot(self.x.T, dout)
         self.db = np.sum(dout, axis=0)

@@ -1,0 +1,24 @@
+import os,sys 
+sys.append(os.path.dirname(os.path.abspath(__file__)) + "..")
+import numpy as np
+
+
+class Momentum:
+    def __init__(self,lr = 0.01,momentum = 0.9):
+        self.lr = lr
+        self.momentum = momentum
+        self.v = None # v 的形状要和w的形状一样
+       
+    
+    def update(self,params,grads):
+        if self.v is None:
+            self.v = {}
+            for key,val in params.items():
+                self.v[key] = np.zeros_like(val)
+            
+            for key in params.keys():
+                self.v[key] = self.momentum * self.v[key] - self.lr * grads[key]
+                params[key] += self.v[key]
+
+       
+        

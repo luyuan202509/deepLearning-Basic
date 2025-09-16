@@ -2,6 +2,16 @@ import os,sys
 sys.append(os.path.dirname(os.path.abspath(__file__)) + "..")
 import numpy as np
 
+class SGD:
+
+    """随机梯度下降法（Stochastic Gradient Descent）"""
+
+    def __init__(self, lr=0.01):
+        self.lr = lr
+        
+    def update(self, params, grads):
+        for key in params.keys():
+            params[key] -= self.lr * grads[key] 
 
 class Momentum:
     def __init__(self,lr = 0.01,momentum = 0.9):

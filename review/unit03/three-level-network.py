@@ -2,9 +2,13 @@
 
 import numpy as np 
 
+# 激活函数-segmoid
 def segmoid(x):
     return 1 / (1 + np.exp(-x))
 
+# 输出函数-恒等函数
+def identity_function(x):
+    return x
 
 X  = np.array([1.0, 0.5])
 W1 = np.array([[0.1, 0.3, 0.5], 
@@ -26,7 +30,8 @@ b3 = np.array([0.1, 0.2])
 A3 = np.dot(Z2,W3) +b3
 Z3 = segmoid(A3)
 
-print(Z3)
+y = identity_function(A3)
+print(y)
 
 
 

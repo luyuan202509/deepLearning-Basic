@@ -1,6 +1,11 @@
 ''' 常用公共函数 '''
 import numpy as np
 
+def identity_function(x):
+    return x
+def step_function(x):
+    return np.array(x > 0, dtype=np.int)
+
 # 激活函数
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
@@ -51,7 +56,7 @@ def cross_entropy_error(y,t,one_hot_label):
 '''
 
 #版本二
-def cross_entropy_error(y, t):
+def cross_entropy_error(y, t): 
     if y.ndim == 1:
         t = t.reshape(1, t.size)
         y = y.reshape(1, y.size)

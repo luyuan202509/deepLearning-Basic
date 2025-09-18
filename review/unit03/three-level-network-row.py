@@ -11,6 +11,15 @@ def segmoid(x):
 def identity_function(x):
     return x
 
+# 输出函数-softmax
+def softmax(a):
+    c = np.max(a) #处理参数过大溢出情况
+    exp_a = np.exp(a - c)
+    sum_exp_a = np.sum(exp_a)
+    y = exp_a / sum_exp_a
+    return y
+
+
 def init_network():
     network = {}
     network['W1'] = np.array([[0.1, 0.3, 0.5], [0.2, 0.4, 0.6]])

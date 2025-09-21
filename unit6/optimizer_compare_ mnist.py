@@ -11,7 +11,7 @@ from common.optimizer import SGD,Momentum,AdaGrad,Adam
 
 
 # 0:读入MNIST数据==========
-(x_train, t_train), (x_test, t_test) = load_mnist(normalize=True)
+(x_train, t_train), (x_test, t_test) = load_mnist(flatten=True,normalize=True)
 
 train_size = x_train.shape[0]
 batch_size = 128
@@ -29,9 +29,9 @@ optimizers['Adam'] = Adam()
 networks = {}
 train_loss = {}
 for key in optimizers.keys():
-    networks[key] = MultiLayerNet(
-        input_size=784, hidden_size_list=[100, 100, 100, 100],
-        output_size=10)
+    networks[key] = MultiLayerNet( input_size=784, 
+                                   hidden_size_list=[100, 100, 100, 100],
+                                   output_size=10)
     train_loss[key] = []    
 
 
@@ -41,9 +41,13 @@ for i in range(max_iterations):
     x_batch = x_train[batch_mask]
     t_batch = t_train[batch_mask]
     
+    print("x_batch的shape：",x_batch.shape)
+    print("t_batch的shape：",t_batch.shape)
+    
     for key in optimizers.keys():
         grads = networks[key].gradient(x_batch, t_batch)
         optimizers[key].update(networks[key].params, grads)
+        print("哈哈哈哈")
     
         loss = networks[key].loss(x_batch, t_batch)
         train_loss[key].append(loss)
@@ -53,7 +57,7 @@ for i in range(max_iterations):
         for key in optimizers.keys():
             loss = networks[key].loss(x_batch, t_batch)
             print(key + ":" + str(loss))
-
+    break 
 
 # 3.绘制图形==========
 markers = {"SGD": "o", "Momentum": "x", "AdaGrad": "s", "Adam": "D"}

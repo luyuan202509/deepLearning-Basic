@@ -24,9 +24,9 @@ class MultiLayerNet:
     """
     def __init__(self, input_size, hidden_size_list, output_size,
                  activation='relu', weight_init_std='relu', weight_decay_lambda=0):
-        self.input_size = input_size
-        self.output_size = output_size
-        self.hidden_size_list = hidden_size_list
+        self.input_size = input_size # 784
+        self.output_size = output_size # 10
+        self.hidden_size_list = hidden_size_list # [100, 100, 100，100]
         self.hidden_layer_num = len(hidden_size_list)
         self.weight_decay_lambda = weight_decay_lambda
         self.params = {}
@@ -34,7 +34,7 @@ class MultiLayerNet:
         # 初始化权重
         self.__init_weight(weight_init_std)
 
-        # 生成层
+        # 生成层 各个隐藏层
         activation_layer = {'sigmoid': Sigmoid, 'relu': Relu}
         self.layers = OrderedDict()
         for idx in range(1, self.hidden_layer_num+1):
@@ -48,6 +48,7 @@ class MultiLayerNet:
 
         self.last_layer = SoftmaxWithLoss()
 
+    # W,b的初始值赋值 
     def __init_weight(self, weight_init_std):
         """设定权重的初始值
 

@@ -1,7 +1,4 @@
-from hmac import new
 import sys,os
-
-
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 import numpy as np
@@ -12,17 +9,20 @@ from unit5.two_layer_net import TwoLayerNet
 
 network = TwoLayerNet(input_size = 784,hidden_size = 50,output_size = 10)
 
-iters_num = 10000
+iters_num = 1000
 train_size = x_train.shape[0]
 batch_size = 100 
-learn_rate = 0.1
+learn_rate = 0.009
 train_loss_list = []
 train_acc_list = []
 test_acc_list = []
 
+def recordLoss(i,loss):
+    with open("unit5/loss.txt", "a") as f:
+        f.write( f"{i} : " + str(loss) + "\n")
+
+
 iter_per_epoch = max(train_size / batch_size,1)
-print("iter_per_epoch:",iter_per_epoch)
-print("train_size:",train_size)
 for i in range(iters_num):
     batch_mask = np.random.choice(train_size,batch_size)
     x_batch = x_train[batch_mask]
@@ -37,6 +37,9 @@ for i in range(iters_num):
     
         # 计算损失
         loss  = network.loss(x_batch, t_batch)
+
+        #记录损失
+        recordLoss(i,loss)
         train_loss_list.append(loss)
         
         if i % iter_per_epoch == 0:
@@ -44,7 +47,8 @@ for i in range(iters_num):
             test_acc = network.accuracy(x_test, t_test)
             train_acc_list.append(train_acc)
             test_acc_list.append(test_acc)
-            print(train_acc,test_acc)
-    
+   # print(f"第 {i} 次 推理结束...");
+
+#print("损失：",train_loss_list)
 
 

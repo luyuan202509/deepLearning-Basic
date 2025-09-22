@@ -34,9 +34,11 @@ def softmax(a):
 def mean_squared_error(y,t):
     return 0.5 * np.sum(y-t**2)
 # 交叉熵误差
+''' 
 def cross_entropy_error(y,t):
     delt  = 1e-7
-    return -np.sum(t * np.log(y-delt))
+    return - np.sum(t * np.log(y-delt))
+'''
 
 # mini-batch版交叉熵误差的实现,监督数据只有一个正确结果或者有多个
 

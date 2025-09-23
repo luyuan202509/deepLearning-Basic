@@ -11,8 +11,7 @@ from common.optimizer import SGD,Momentum,AdaGrad,Adam
 
 
 # 0:读入MNIST数据==========
-(x_train, t_train), (x_test, t_test) = load_mnist(normalize=True)
-
+(x_train, t_train), (x_test, t_test) = load_mnist(flatten=True,normalize=True)
 train_size = x_train.shape[0]
 batch_size = 128
 max_iterations = 2000
@@ -20,7 +19,7 @@ max_iterations = 2000
 
 # 1:进行实验的设置==========
 optimizers = {}
-optimizers['SGD'] = SGD()
+optimizers['SGD'] = SGD(lr=0.01)
 optimizers['Momentum'] = Momentum()
 optimizers['AdaGrad'] = AdaGrad()
 optimizers['Adam'] = Adam()
@@ -29,9 +28,9 @@ optimizers['Adam'] = Adam()
 networks = {}
 train_loss = {}
 for key in optimizers.keys():
-    networks[key] = MultiLayerNet(
-        input_size=784, hidden_size_list=[100, 100, 100, 100],
-        output_size=10)
+    networks[key] = MultiLayerNet( input_size=784, 
+                                   hidden_size_list=[100, 100, 100, 100],
+                                   output_size=10)
     train_loss[key] = []    
 
 
@@ -44,10 +43,21 @@ for i in range(max_iterations):
     for key in optimizers.keys():
         grads = networks[key].gradient(x_batch, t_batch)
         optimizers[key].update(networks[key].params, grads)
-    
         loss = networks[key].loss(x_batch, t_batch)
-        train_loss[key].append(loss)
+
+        # 检查是否出现NaN
+        if not np.isnan(loss):
+            train_loss[key].append(loss)
+        else:
+            # 如果出现NaN，添加前一个损失值或0
+            if len(train_loss[key]) > 0:
+                train_loss[key].append(train_loss[key][-1])
+            else:
+                train_loss[key].append(0)
     
+        print(loss)
+     
+
     if i % 100 == 0:
         print( "===========" + "iteration:" + str(i) + "===========")
         for key in optimizers.keys():
@@ -55,13 +65,18 @@ for i in range(max_iterations):
             print(key + ":" + str(loss))
 
 
+
 # 3.绘制图形==========
+''' 
+
+'''
+
 markers = {"SGD": "o", "Momentum": "x", "AdaGrad": "s", "Adam": "D"}
 x = np.arange(max_iterations)
 for key in optimizers.keys():
     plt.plot(x, smooth_curve(train_loss[key]), marker=markers[key], markevery=100, label=key)
 plt.xlabel("iterations")
 plt.ylabel("loss")
-plt.ylim(0, 1)
+plt.ylim(0, 20)
 plt.legend()
 plt.show()

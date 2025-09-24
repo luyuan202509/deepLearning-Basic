@@ -2,7 +2,7 @@ import sys,os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 import numpy as np
 from common.functions import sigmoid,softmax,cross_entropy_error
-from common.layers import im2col,col2im
+from common.util import im2col,col2im
 class Relu:
     def __init__(self):
         self.mask = None

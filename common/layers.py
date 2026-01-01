@@ -39,10 +39,16 @@ class Affine:
         self.W = W
         self.b = b
         self.x = None
-        self.dw = None
+        self.original_x_shape = None
+        self.dW = None
         self.db = None
         
     def forward(self,x):
+        # 保存原始形状以便反向传播时恢复
+        self.original_x_shape = x.shape
+        # 如果输入是多维的，展平成2维
+        if x.ndim != 2:
+            x = x.reshape(x.shape[0], -1)
         self.x = x
         out = np.dot(x, self.W) + self.b
         return out
@@ -51,6 +57,8 @@ class Affine:
         dx = np.dot(dout, self.W.T)
         self.dW = np.dot(self.x.T, dout)
         self.db = np.sum(dout, axis=0)
+        # 恢复原始形状
+        dx = dx.reshape(self.original_x_shape)
         return dx
 
 class SoftmaxWithLoss():
@@ -190,6 +198,12 @@ class Convolution:
         self.b = b
         self.stride = stride
         self.pad = pad
+        
+        # 中间数据（backward时使用）
+        self.x = None
+        self.col = None
+        self.col_W = None
+        
     def forward(self,x):
         FN,C,FH,FW = self.W.shape
         N,C,H,W = x.shape
@@ -200,14 +214,25 @@ class Convolution:
         col_W = self.W.reshape(FN, -1).T  #  滤波器的展开
         out = np.dot(col, col_W) + self.b
         out = out.reshape(N, out_h, out_w, -1).transpose(0, 3, 1, 2)
+        
+        self.x = x
+        self.col = col
+        self.col_W = col_W
+        
         return out
     
     def backward(self,dout):
         FN,C,FH,FW = self.W.shape
         dout = dout.transpose(0,2,3,1).reshape(-1, FN)
+        
         self.db = np.sum(dout, axis=0)
         self.dW = np.dot(self.col.T, dout)
         self.dW = self.dW.transpose(1,0).reshape(FN,C,FH,FW)
+        
+        dcol = np.dot(dout, self.col_W.T)
+        dx = col2im(dcol, self.x.shape, FH, FW, self.stride, self.pad)
+        
+        return dx
 
 class Pooling:
     def __init__(self, pool_h, pool_w, stride=1, pad=0):

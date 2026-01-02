@@ -1,9 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from my_func import sigmoid,identity_function
-### 手写数字识别
-import sys, os
-sys.path.append(os.pardir)
 
 def init_network():
     network = {}

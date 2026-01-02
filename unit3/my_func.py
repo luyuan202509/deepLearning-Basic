@@ -23,6 +23,11 @@ def softmax2(x):
    y = exp_a / sum_exp_a
    return y
 
+
+def mean_squared_error(y,t):
+    return 0.5 * np.sum((y-t)**2)
+
+
 def main1():
     x = np.array([[0.1, 0.8, 0.1], [0.3, 0.1, 0.6]])
     y = softmax(x)

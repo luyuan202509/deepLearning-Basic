@@ -1,4 +1,3 @@
-from turtle import back
 import numpy as np
 import sys, os
 # 添加项目根目录到 Python 路径

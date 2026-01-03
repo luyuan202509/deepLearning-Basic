@@ -1,8 +1,6 @@
 from turtle import back
 import numpy as np
 import sys, os
-
-from unit4.train_neuralnet import grads, loss
 # 添加项目根目录到 Python 路径
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
@@ -35,6 +33,7 @@ class TwoLayerNet:
     def predict(self,x):
         for layer in self.layers.values():
             x = layer.forward(x)
+        return x
     # x: 输入数据，t：监督数据
     def loss(self,x,t):
         y = self.predict(x)
@@ -73,32 +72,8 @@ class TwoLayerNet:
         
         grads = {}
         grads['W1'] = self.layers['Affine1'].dW
-        grads['b1'] = self.layers['b1'].dW
+        grads['b1'] = self.layers['Affine1'].db
         grads['W2'] = self.layers['Affine2'].dW
-        grads['b2'] = self.layers['b2'].dW
+        grads['b2'] = self.layers['Affine2'].db
 
         return grads
-
-
-
-
-
-
-def print_param(net):
-   
-    for i in range(len(net.params)):
-        #print(f"参数{net.params[i]}形状：{net.params[i].shape}")
-       print(net.params['W1'].shape)
-       print(net.params['b1'].shape)
-       print(net.params['W2'].shape)
-       print(net.params['b2'].shape)
-def main():
-    net = TwoLayerNet(input_size=784,hidden_size=100,output_size=10)
-    print_param(net)
-    x = np.random.rand(100,784)
-    t = np.random.rand(100,10)
-    grads = net.numerical_gradient(x,t)
-
-
-if __name__ == '__main__':
-    main()

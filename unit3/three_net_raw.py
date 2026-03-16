@@ -1,4 +1,3 @@
-from re import A
 import numpy as np
 import sys,os 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))

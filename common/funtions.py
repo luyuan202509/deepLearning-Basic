@@ -1,4 +1,5 @@
 import numpy as np
+from .gradient import numerical_gradient
 
 def step_function(x):
     return np.array(x>0,dtype=np.int)
@@ -34,3 +35,10 @@ def cross_entropy_error(y,t):
     batch_size = y.shape[0]
     return -np.sum(t*np.log(y+1e-7))/batch_size
     
+
+def gradient_descent(f, init_x, lr=0.01, step_num=100):
+    x = init_x
+    for i in range(step_num):
+        grad = numerical_gradient(f,x)
+        x -= lr * grad
+    return x 

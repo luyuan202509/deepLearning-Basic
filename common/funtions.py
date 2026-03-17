@@ -19,12 +19,19 @@ def identity_function(x):
     return x
 
 def softmax(a):
-    c = np.max(a)
-    exp_a = np.exp(a-c)
-    sum_exp_a = np.sum(exp_a)
-    y = exp_a/sum_exp_a
+    if a.ndim == 2:
+        # 对每个样本（每一行）减去该行的最大值，防止溢出
+        a = a - np.max(a, axis=1, keepdims=True)
+        exp_a = np.exp(a)
+        sum_exp_a = np.sum(exp_a, axis=1, keepdims=True)
+        y = exp_a / sum_exp_a
+    else:
+        # 单样本情况
+        a = a - np.max(a)
+        exp_a = np.exp(a)
+        sum_exp_a = np.sum(exp_a)
+        y = exp_a / sum_exp_a
     return y
-
 
 def mean_squared_error(y,t):
     return 0.5*np.sum((y-t)**2)

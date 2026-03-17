@@ -41,11 +41,21 @@ def cross_entropy_error2(y,t):
     return -np.sum(t*np.log(y+delta))
 
 def cross_entropy_error(y,t):
+    """交叉熵误差
+    y: 预测概率 (batch, num_classes) 或 (num_classes,)
+    t: 教师标签 (batch,) 的类别索引，或 (batch, num_classes) 的 one-hot
+    """
     if y.ndim == 1:
-        t = t.reshape(1,t.size)
-        y = y.reshape(1,y.size)
+        y = y.reshape(1, y.size)
+        t = np.array(t).reshape(1, -1)
+
     batch_size = y.shape[0]
-    return -np.sum(t*np.log(y+1e-7))/batch_size
+
+    # one-hot -> label index
+    if t.ndim != 1 and t.size == y.size:
+        t = np.argmax(t, axis=1)
+
+    return -np.sum(np.log(y[np.arange(batch_size), t] + 1e-7)) / batch_size
     
 
 def gradient_descent(f, init_x, lr=0.01, step_num=100):

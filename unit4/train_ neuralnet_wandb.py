@@ -62,6 +62,7 @@ for i in range(iters_num):
     # 记录学习过程
     train_loss = network.loss(x_batch, t_batch)
     train_loss_list.append(train_loss)
+    run.log({"train_loss": train_loss})
 
     if i % iter_per_epoch == 0:
         train_acc = network.accuracy(x_train, t_train)
@@ -72,6 +73,8 @@ for i in range(iters_num):
         print("train acc, test acc | " + str(train_acc) + ", " + str(test_acc))
 
         run.log({"train_acc": train_acc, "test_acc": test_acc})
+
+
 
 run.finish()
 

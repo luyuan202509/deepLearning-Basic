@@ -3,7 +3,6 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 """此版本存在问题，后续优化"""
-
 import numpy as np
 import torch
 from torch import nn

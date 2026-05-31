@@ -13,7 +13,9 @@ train_loss_list = []
 # 超参 
 iters_num = 10000  # 迭代次数，每一次都会做一次minibatch
 mini_batch_size = 100
-train_size = x_train.shape[0]
+print(f"1111==>:: {x_train.shape}")
+train_size = x_train.shape[0] # 
+print(f"222===>:: {train_size}")
 batch_size = 100
 learning_rate = 0.09
 
